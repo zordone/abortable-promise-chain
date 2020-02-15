@@ -1,0 +1,68 @@
+{
+  "name": "abortable-promise-chain",
+  "version": "1.0.0",
+  "description": "Promise subclass to make the promise chain abortable.",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "eslint src/**",
+    "test": "jest src",
+    "test:watch": "jest src --watchAll",
+    "build": "babel src -d dist"
+  },
+  "keywords": [
+    "promise",
+    "subclass",
+    "abortable",
+    "chain"
+  ],
+  "author": "zordone",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.8.4",
+    "@babel/core": "^7.8.4",
+    "@babel/preset-env": "^7.8.4",
+    "babel-eslint": "^10.0.3",
+    "babel-jest": "^25.1.0",
+    "eslint": "^6.8.0",
+    "eslint-config-prettier": "^6.10.0",
+    "eslint-plugin-prettier": "^3.1.2",
+    "jest": "^25.1.0",
+    "prettier": "^1.19.1"
+  },
+  "babel": {
+    "presets": [
+      "@babel/preset-env"
+    ],
+    "ignore": [
+      "**/*.test.js"
+    ]
+  },
+  "eslintConfig": {
+    "parser": "babel-eslint",
+    "env": {
+      "browser": true,
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:prettier/recommended"
+    ],
+    "rules": {
+      "prettier/prettier": "error"
+    }
+  },
+  "prettier": {
+    "singleQuote": true
+  },
+  "jest": {
+    "collectCoverage": true,
+    "transform": {
+      ".js": "<rootDir>/node_modules/babel-jest"
+    },
+    "roots": [
+      "<rootDir>/src/"
+    ]
+  }
+}
