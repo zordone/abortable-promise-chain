@@ -7,7 +7,7 @@
     "lint": "eslint src/**",
     "test": "jest src",
     "test:watch": "jest src --watchAll",
-    "build": "babel src -d dist"
+    "build": "babel src -d dist --ignore **/*.test.js"
   },
   "author": "zordone",
   "repository": "github:zordone/abortable-promise-chain",
@@ -35,9 +35,6 @@
     "presets": [
       "@babel/preset-env",
       "minify"
-    ],
-    "ignore": [
-      "**/*.test.js"
     ],
     "comments": false
   },
