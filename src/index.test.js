@@ -200,7 +200,7 @@ describe('aborting', () => {
   it('can abort in `finally`', done => {
     timeout().then(done);
     return AbortablePromise.from(Promise.reject('error'))
-      .finally((res, abort) => {
+      .finally((_, abort) => {
         abort();
         return 'this should be ignored';
       })
@@ -227,5 +227,17 @@ describe('aborting', () => {
         (err, abort) => abort()
       )
       .then(shouldnRun);
+  });
+
+  it('ignores exceptions thrown after `abort`', done => {
+    timeout().then(done);
+    return AbortablePromise.from(Promise.resolve('original'))
+      .then((res, abort) => {
+        abort();
+        throw 'after abort';
+      })
+      .then(shouldnRun)
+      .catch(shouldnRun)
+      .finally(shouldnRun);
   });
 });

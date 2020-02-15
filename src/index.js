@@ -25,8 +25,16 @@ export default class AbortablePromise extends Promise {
       return handler;
     }
     return res => {
-      // run the original handler, pass the abort function in case it wants to abort
-      const handlerResult = handler(res, () => this._abort());
+      let handlerResult;
+      try {
+        // run the original handler, pass the abort function in case it wants to abort
+        handlerResult = handler(res, () => this._abort());
+      } catch (ex) {
+        // if it did abort, we ignore any exceptions thrown after that
+        if (!this._aborted) {
+          throw ex;
+        }
+      }
       // if it did abort, ignore the result and return empty promise
       if (this._aborted) {
         return emptyPromise;
