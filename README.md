@@ -25,7 +25,7 @@ import AbortablePromise from 'abortable-promise-chain';
 
 AbortablePromise.from(someApiCall())
   .then((res, abort) => {
-    if (res.something) {
+    if (res.isTheSkyBlue) {
       abort();
     }
     return res;
@@ -42,11 +42,11 @@ There are two ways of creating an `AbortablePromise`:
 1. From an [executor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise#Syntax) function, just like we would use for creating a normal `Promise`:
 
 ```javascript
-const executor = (resolve, reject) => setTimeout(resolve(123), 1000);
+const executor = (resolve, reject) => setTimeout(resolve('some data'), 1000);
 const abortable = new AbortablePromise(executor);
 ```
 
-2. From an already created normal `Promise`. (Note that we are using the `.from` static method instead of the constructor here)
+2. From an already created normal `Promise`. (Note that we are using the `from` static method instead of the constructor here)
 
 ```javascript
 const promise = fetch('some url');
@@ -64,13 +64,30 @@ Note that `finally` normally doesn't get any parameters, but we still use the se
 
 abortable
   .then((res, abort) => {
-    // i can call abort here
+    // i can call abort here,
   })
   .catch((err, abort) => {
-    // or here
+    // or here,
   })
   .finally((_, abort) => {
-    // or here
+    // or here.
+  });
+```
+
+Unlike some alternatives, `AbortablePromise` allows you to abort the chain **from the inside**. And even if you return a normal `Promise` or a value from a handler, it gets automatically wrapped, so you don't loose the abort capability further down.
+
+```javascript
+AbortablePromise.from(fetch('json url'))
+  .then(res => res.json()) // that's a normal promise,
+  .then((res, abort) => {
+    // but i can still call abort here,
+    if (res.isTheSeaWet) {
+      abort();
+    }
+    return res;
+  })
+  .then(res => {
+    // so this won't run.
   });
 ```
 

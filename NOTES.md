@@ -7,5 +7,7 @@
 - ✅ Added test suite
 - ✅ Add eslint & prettier
 - ✅ Write readme
+- use Promise.race instead of the timeout->done in the tests?
 - Readme: side by side example
+- add onAborted as an executor param?
 - Publish to npm (with the `np` tool)
