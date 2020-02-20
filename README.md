@@ -99,7 +99,7 @@ AbortablePromise.from(fetch('json url'))
 
 ## Supported browsers
 
-The package is transpiled to ES5 with Babel, using the "defaults" browserlist. You can run `npx browserslist "defaults` in your terminal to see the list of browsers.
+The package is transpiled to ES5 with Babel, using the "defaults" browserlist. You can run `npx browserslist "defaults"` in your terminal to see the list of browsers.
 
 Node.js is also supported.
 
