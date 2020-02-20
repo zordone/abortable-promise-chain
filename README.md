@@ -35,6 +35,12 @@ AbortablePromise.from(someApiCall())
   });
 ```
 
+If you are using it in node, require it like this:
+
+```javascript
+const AbortablePromise = require('abortable-promise-chain').default;
+```
+
 ## Usage
 
 There are two ways of creating an `AbortablePromise`:
@@ -90,6 +96,12 @@ AbortablePromise.from(fetch('json url'))
     // so this won't run.
   });
 ```
+
+## Supported browsers
+
+The package is transpiled to ES5 with Babel, using the "defaults" browserlist. You can run `npx browserslist "defaults` in your terminal to see the list of browsers.
+
+Node.js is also supported.
 
 ## Pros
 

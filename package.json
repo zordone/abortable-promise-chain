@@ -38,6 +38,9 @@
     ],
     "comments": false
   },
+  "browserslist": [
+    "defaults"
+  ],
   "eslintConfig": {
     "parser": "babel-eslint",
     "env": {
