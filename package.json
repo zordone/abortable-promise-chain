@@ -1,6 +1,6 @@
 {
   "name": "abortable-promise-chain",
-  "version": "0.0.0",
+  "version": "1.0.1",
   "description": "Promise subclass to make the promise chain abortable.",
   "main": "dist/index.js",
   "scripts": {
