@@ -1,6 +1,6 @@
 {
   "name": "abortable-promise-chain",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Promise subclass to make the promise chain abortable.",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
     "test": "jest src",
     "test:watch": "jest src --watchAll",
     "build": "babel src -d dist --ignore **/*.test.js",
-    "publish": "np"
+    "release": "np"
   },
   "author": "zordone",
   "repository": "github:zordone/abortable-promise-chain",
