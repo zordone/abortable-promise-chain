@@ -1,13 +1,14 @@
 {
   "name": "abortable-promise-chain",
-  "version": "1.0.0",
+  "version": "0.0.0",
   "description": "Promise subclass to make the promise chain abortable.",
   "main": "dist/index.js",
   "scripts": {
     "lint": "eslint src/**",
     "test": "jest src",
     "test:watch": "jest src --watchAll",
-    "build": "babel src -d dist --ignore **/*.test.js"
+    "build": "babel src -d dist --ignore **/*.test.js",
+    "publish": "np"
   },
   "author": "zordone",
   "repository": "github:zordone/abortable-promise-chain",
@@ -29,6 +30,7 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-prettier": "^3.1.2",
     "jest": "^25.1.0",
+    "np": "^6.1.0",
     "prettier": "^1.19.1"
   },
   "babel": {
@@ -68,5 +70,9 @@
     "roots": [
       "<rootDir>/src/"
     ]
+  },
+  "np": {
+    "yarn": false,
+    "contents": "dist"
   }
 }
