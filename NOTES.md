@@ -7,8 +7,9 @@
 - ✅ Add test suite
 - ✅ Add eslint & prettier
 - ✅ Write readme
+- ✅ Publish to npm (with the `np` tool)
+- ✅ Add code coverage badge
 - use Promise.race instead of the timeout->done in the tests?
 - Readme: side by side example
 - add jsdoc comments
 - add onAborted as an executor param?
-- Publish to npm (with the `np` tool)

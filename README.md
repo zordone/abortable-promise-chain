@@ -1,3 +1,5 @@
+[![Codecov Coverage](https://img.shields.io/codecov/c/github/zordone/abortable-promise-chain/master.svg?style=flat-square)](https://codecov.io/gh/zordone/abortable-promise-chain/)
+
 # abortable-promise-chain
 
 A Promise subclass to make the promise chain abortable.
