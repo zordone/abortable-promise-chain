@@ -50,7 +50,8 @@ There are two ways of creating an `AbortablePromise`:
 1. From an [executor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise#Syntax) function, just like we would use for creating a normal `Promise`:
 
 ```javascript
-const executor = (resolve, reject) => setTimeout(resolve('some data'), 1000);
+const executor = (resolve, reject) =>
+  setTimeout(() => resolve('some data'), 1000);
 const abortable = new AbortablePromise(executor);
 ```
 
