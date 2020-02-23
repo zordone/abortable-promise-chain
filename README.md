@@ -1,3 +1,4 @@
+<!-- prettier-ignore -->
 [![Codecov Coverage](https://img.shields.io/codecov/c/github/zordone/abortable-promise-chain/master.svg?style=flat-square)](https://codecov.io/gh/zordone/abortable-promise-chain/)
 
 # abortable-promise-chain
@@ -50,8 +51,7 @@ There are two ways of creating an `AbortablePromise`:
 1. From an [executor](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise/Promise#Syntax) function, just like we would use for creating a normal `Promise`:
 
 ```javascript
-const executor = (resolve, reject) =>
-  setTimeout(() => resolve('some data'), 1000);
+const executor = (resolve, reject) => setTimeout(() => resolve('data'), 1000);
 const abortable = new AbortablePromise(executor);
 ```
 
