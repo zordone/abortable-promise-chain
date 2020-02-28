@@ -115,6 +115,10 @@ There are some other packages for a similar use case, but this one is:
 - Safe: No known vulnerabilities according to npm audit.
 - Self contained: No external dependencies (only devDependencies).
 
+## Contributing
+
+If you would like to contibute or report an issue, please read [Contributing](/CONTRIBUTING.md) and our [Code of Conduct](/CODE_OF_CONDUCT.md).
+
 ## Done
 
 That's it, I hope you find this useful.
