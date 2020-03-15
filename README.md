@@ -117,7 +117,7 @@ There are some other packages for a similar use case, but this one is:
 
 ## Contributing
 
-If you would like to contibute or report an issue, please read [Contributing](/CONTRIBUTING.md) and our [Code of Conduct](/CODE_OF_CONDUCT.md).
+If you would like to contribute or report an issue, please read [Contributing](/CONTRIBUTING.md) and our [Code of Conduct](/CODE_OF_CONDUCT.md).
 
 ## Done
 
