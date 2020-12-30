@@ -17,6 +17,10 @@
 
 ## Release process
 
+1. Make sure the code is good:
+   - `npm audit fix`
+   - `npm run lint`
+   - `npm run test`
 1. Commit and push all changes
 1. Run `npm run release`
    - It will ask for a new version
