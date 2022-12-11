@@ -3,8 +3,13 @@ import AbortablePromise from './index';
 
 const noop = () => {};
 const timeout = (ms = 10) => new Promise(resolve => setTimeout(resolve, ms));
-const shouldnRun = () => {
-  throw "this should't run";
+const shouldntRun = name => () => {
+  throw `${name} should't run`;
+};
+const shouldBePending = async promise => {
+  await timeout();
+  const status = await Promise.race([promise, Promise.resolve('pending')]);
+  expect(status).toBe('pending');
 };
 
 describe('new AbortablePromise()', () => {
@@ -177,67 +182,65 @@ describe('finally()', () => {
 });
 
 describe('aborting', () => {
-  it('can abort in `then`', done => {
-    timeout().then(done);
-    return AbortablePromise.from(Promise.resolve('original'))
+  it('can abort in `then`', async () => {
+    const promise = AbortablePromise.from(Promise.resolve('original'))
       .then((res, abort) => {
         abort();
         return 'this should be ignored';
       })
-      .then(shouldnRun);
+      .then(shouldntRun('then'));
+    return shouldBePending(promise);
   });
 
-  it('can abort in `catch`', done => {
-    timeout().then(done);
-    return AbortablePromise.from(Promise.reject('error'))
+  it('can abort in `catch`', async () => {
+    const promise = AbortablePromise.from(Promise.reject('error'))
       .catch((res, abort) => {
         abort();
         return 'this should be ignored';
       })
-      .then(shouldnRun);
+      .then(shouldntRun('then'));
+    return shouldBePending(promise);
   });
 
-  it('can abort in `finally`', done => {
-    timeout().then(done);
-    return AbortablePromise.from(Promise.reject('error'))
+  it('can abort in `finally`', async () => {
+    const promise = AbortablePromise.from(Promise.reject('error'))
       .finally((_, abort) => {
         abort();
         return 'this should be ignored';
       })
-      .then(shouldnRun);
+      .then(shouldntRun('then'));
+    return shouldBePending(promise);
   });
 
-  it('can abort in the `onFulfilled` handler of a 2 param `then`', done => {
-    timeout().then(done);
-    const promise = Promise.resolve('value');
-    return AbortablePromise.from(promise)
+  it('can abort in the `onFulfilled` handler of a 2 param `then`', async () => {
+    const promise = AbortablePromise.from(Promise.resolve('value'))
       .then(
         (res, abort) => abort(),
         err => 'catch'
       )
-      .then(shouldnRun);
+      .then(shouldntRun('then'));
+    return shouldBePending(promise);
   });
 
-  it('can abort in the `onRejected` handler of a 2 param `then`', done => {
-    timeout().then(done);
-    const promise = Promise.reject('error');
-    return AbortablePromise.from(promise)
+  it('can abort in the `onRejected` handler of a 2 param `then`', async () => {
+    const promise = AbortablePromise.from(Promise.reject('error'))
       .then(
         res => 'then',
         (err, abort) => abort()
       )
-      .then(shouldnRun);
+      .then(shouldntRun('then'));
+    return shouldBePending(promise);
   });
 
-  it('ignores exceptions thrown after `abort`', done => {
-    timeout().then(done);
-    return AbortablePromise.from(Promise.resolve('original'))
+  it('ignores exceptions thrown after `abort`', async () => {
+    const promise = AbortablePromise.from(Promise.resolve('original'))
       .then((res, abort) => {
         abort();
         throw 'after abort';
       })
-      .then(shouldnRun)
-      .catch(shouldnRun)
-      .finally(shouldnRun);
+      .then(shouldntRun('then'))
+      .catch(shouldntRun('catch'))
+      .finally(shouldntRun('finally'));
+    return shouldBePending(promise);
   });
 });
