@@ -1,6 +1,3 @@
-<!-- prettier-ignore -->
-[![Codecov Coverage](https://img.shields.io/codecov/c/github/zordone/abortable-promise-chain/master.svg?style=flat-square)](https://codecov.io/gh/zordone/abortable-promise-chain/)
-
 # abortable-promise-chain
 
 A Promise subclass to make the promise chain abortable.
@@ -110,7 +107,7 @@ Node.js is also supported.
 
 There are some other packages for a similar use case, but this one is:
 
-- Tiny: ~4KB minified.
+- Tiny: 764 bytes of minified JavaScript.
 - Well tested: 100% test coverage.
 - Safe: No known vulnerabilities according to npm audit.
 - Self contained: No external dependencies (only devDependencies).
