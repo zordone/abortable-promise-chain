@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import AbortablePromise from './index';
 
 const noop = () => {};
@@ -14,7 +13,7 @@ const shouldBePending = async promise => {
 
 describe('new AbortablePromise()', () => {
   it('handles a `then` chain without errors', () => {
-    const executor = (resolve, reject) => setTimeout(resolve(1));
+    const executor = resolve => setTimeout(resolve(1));
     const abortable = new AbortablePromise(executor)
       .then(res => res * 2)
       .then(res => res * 3);
@@ -22,43 +21,43 @@ describe('new AbortablePromise()', () => {
   });
 
   it('catches executor rejects', () => {
-    const executor = (resolve, reject) => setTimeout(reject('foo'));
+    const executor = (_, reject) => setTimeout(reject('foo'));
     const abortable = new AbortablePromise(executor)
-      .then(res => 'ok')
-      .catch(err => 'caught');
+      .then(() => 'ok')
+      .catch(() => 'caught');
     return expect(abortable).resolves.toBe('caught');
   });
 
   it('ignores `catch` after a successful `then`', () => {
-    const executor = (resolve, reject) => setTimeout(resolve('foo'));
+    const executor = resolve => setTimeout(resolve('foo'));
     const abortable = new AbortablePromise(executor)
-      .then(res => 'ok')
-      .catch(err => 'caught');
+      .then(() => 'ok')
+      .catch(() => 'caught');
     return expect(abortable).resolves.toBe('ok');
   });
 
   it('catches executor rejects with a 2 param `then`', () => {
-    const executor = (resolve, reject) => setTimeout(reject('foo'));
+    const executor = (_, reject) => setTimeout(reject('foo'));
     const abortable = new AbortablePromise(executor).then(
-      res => 'ok',
-      err => 'caught'
+      () => 'ok',
+      () => 'caught'
     );
     return expect(abortable).resolves.toBe('caught');
   });
 
   it('catches exceptions thrown in a `then`', () => {
-    const executor = (resolve, reject) => setTimeout(resolve(2));
+    const executor = resolve => setTimeout(resolve(2));
     const abortable = new AbortablePromise(executor)
-      .then(res => {
+      .then(() => {
         throw 'something';
       })
-      .catch(err => 'caught');
+      .catch(() => 'caught');
     return expect(abortable).resolves.toBe('caught');
   });
 
   it('rejects after uncaught errors', () => {
-    const executor = (resolve, reject) => setTimeout(resolve(2));
-    const abortable = new AbortablePromise(executor).then(res => {
+    const executor = resolve => setTimeout(resolve(2));
+    const abortable = new AbortablePromise(executor).then(() => {
       throw 'something';
     });
     return expect(abortable).rejects.toBe('something');
@@ -83,15 +82,15 @@ describe('AbortablePromise.from()', () => {
 
   it('rejects if the original Promise rejects', () => {
     const promise = Promise.reject('error');
-    const abortable = AbortablePromise.from(promise).then(res => 'ok');
+    const abortable = AbortablePromise.from(promise).then(() => 'ok');
     return expect(abortable).rejects.toBe('error');
   });
 
   it('handles a 2 param `then` with no errors', () => {
     const promise = Promise.resolve('value');
     const abortable = AbortablePromise.from(promise).then(
-      res => 'then',
-      err => 'catch'
+      () => 'then',
+      () => 'catch'
     );
     expect(abortable).resolves.toBe('then');
   });
@@ -99,8 +98,8 @@ describe('AbortablePromise.from()', () => {
   it('handles a 2 param `then` with errors', () => {
     const promise = Promise.reject('error');
     const abortable = AbortablePromise.from(promise).then(
-      res => 'then',
-      err => 'catch'
+      () => 'then',
+      () => 'catch'
     );
     expect(abortable).resolves.toBe('catch');
   });
@@ -108,12 +107,12 @@ describe('AbortablePromise.from()', () => {
   it('converts returned values to AbortablePromise', () => {
     const promise = Promise.resolve(6);
     const abortable = AbortablePromise.from(promise)
-      .then(res => 'primitive value')
-      .then((res, abort) => {
+      .then(() => 'primitive value')
+      .then((_, abort) => {
         expect(abort).toBeDefined();
         return Promise.resolve('native promise');
       })
-      .then((res, abort) => {
+      .then((_, abort) => {
         expect(abort).toBeDefined();
         return 'ok';
       });
@@ -123,8 +122,8 @@ describe('AbortablePromise.from()', () => {
   it('handles multiple `then`-`catch` pairs', () => {
     const promise = Promise.resolve('value');
     const abortable = AbortablePromise.from(promise)
-      .then(res => 'then1')
-      .then(res => {
+      .then(() => 'then1')
+      .then(() => {
         throw 'error1';
       })
       .catch(err => {
@@ -148,7 +147,7 @@ describe('finally()', () => {
     const promise = Promise.resolve(4);
     const onFinally = jest.fn();
     return AbortablePromise.from(promise)
-      .then(res => 'foo')
+      .then(() => 'foo')
       .finally(onFinally)
       .then(res => {
         expect(onFinally).toBeCalled();
@@ -160,7 +159,7 @@ describe('finally()', () => {
     const promise = Promise.reject('error');
     const onFinally = jest.fn();
     return AbortablePromise.from(promise)
-      .catch(err => 'caught')
+      .catch(() => 'caught')
       .finally(onFinally)
       .then(res => {
         expect(onFinally).toBeCalled();
@@ -172,7 +171,7 @@ describe('finally()', () => {
     const promise = Promise.resolve(5);
     const onFinally = jest.fn();
     return AbortablePromise.from(promise)
-      .then(res => {
+      .then(() => {
         throw 'error';
       })
       .finally(onFinally)
@@ -184,7 +183,7 @@ describe('finally()', () => {
 describe('aborting', () => {
   it('can abort in `then`', async () => {
     const promise = AbortablePromise.from(Promise.resolve('original'))
-      .then((res, abort) => {
+      .then((_, abort) => {
         abort();
         return 'this should be ignored';
       })
@@ -194,7 +193,7 @@ describe('aborting', () => {
 
   it('can abort in `catch`', async () => {
     const promise = AbortablePromise.from(Promise.reject('error'))
-      .catch((res, abort) => {
+      .catch((_, abort) => {
         abort();
         return 'this should be ignored';
       })
@@ -215,8 +214,8 @@ describe('aborting', () => {
   it('can abort in the `onFulfilled` handler of a 2 param `then`', async () => {
     const promise = AbortablePromise.from(Promise.resolve('value'))
       .then(
-        (res, abort) => abort(),
-        err => 'catch'
+        (_, abort) => abort(),
+        () => 'catch'
       )
       .then(shouldntRun('then'));
     return shouldBePending(promise);
@@ -225,8 +224,8 @@ describe('aborting', () => {
   it('can abort in the `onRejected` handler of a 2 param `then`', async () => {
     const promise = AbortablePromise.from(Promise.reject('error'))
       .then(
-        res => 'then',
-        (err, abort) => abort()
+        () => 'then',
+        (_, abort) => abort()
       )
       .then(shouldntRun('then'));
     return shouldBePending(promise);
@@ -234,7 +233,7 @@ describe('aborting', () => {
 
   it('ignores exceptions thrown after `abort`', async () => {
     const promise = AbortablePromise.from(Promise.resolve('original'))
-      .then((res, abort) => {
+      .then((_, abort) => {
         abort();
         throw 'after abort';
       })
